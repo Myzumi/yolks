@@ -1,10 +1,8 @@
 name: build nodejs
 on:
   push:
-    branches:
-      - master
-    paths:
-      - nodejs/**
+    branches: ["nodejs"]
+
 jobs:
   push:
     name: "yolks:nodejs_${{ matrix.tag }}"
@@ -13,9 +11,6 @@ jobs:
       fail-fast: false
       matrix:
         tag:
-          - 12
-          - 14
-          - 16
           - 17
           - 18
     steps:
