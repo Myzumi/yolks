@@ -9,8 +9,8 @@ jobs:
       fail-fast: false
       matrix:
         tag:
-          - 18
-          - 19
+          - 18-normal
+          - 19-normal
     steps:
       - uses: actions/checkout@v2
       # Setup QEMU for ARM64 Build
