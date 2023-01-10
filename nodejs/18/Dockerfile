@@ -1,4 +1,4 @@
-FROM        --platform=$TARGETOS/$TARGETARCH node:19-bullseye-slim
+FROM        --platform=$TARGETOS/$TARGETARCH node:18-bullseye-slim
 
 LABEL       author="Myzumi Myzunto" maintainer="private@no.de"
 
