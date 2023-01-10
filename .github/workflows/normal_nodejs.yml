@@ -1,4 +1,4 @@
-name: build nodejs
+name: build normal nodejs
 on: ["workflow_dispatch"]
 
 jobs:
