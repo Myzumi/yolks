@@ -11,6 +11,7 @@ jobs:
         tag:
           - 18-normal
           - 19-normal
+          - 20-normal
     steps:
       - uses: actions/checkout@v2
       # Setup QEMU for ARM64 Build
