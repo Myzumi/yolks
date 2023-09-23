@@ -11,6 +11,7 @@ jobs:
         tag:
           - 18-java
           - 19-java
+          - 20-java
     steps:
       - uses: actions/checkout@v2
       # Setup QEMU for ARM64 Build
