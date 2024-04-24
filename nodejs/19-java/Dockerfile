@@ -1,9 +1,9 @@
 FROM        --platform=$TARGETOS/$TARGETARCH node:19-bullseye-slim
 
-LABEL       author="Michael Parker" maintainer="parker@pterodactyl.io"
+LABEL       author="Myzumi Myzunto" maintainer="private@no.de"
 
 RUN         apt update \
-            && apt -y install ffmpeg iproute2 git sqlite3 libsqlite3-dev python3 python3-dev ca-certificates dnsutils tzdata zip tar curl build-essential libtool iputils-ping libnss3 default-jre \
+            && apt -y install ffmpeg iproute2 git sqlite3 libsqlite3-dev python3 python3-dev ca-certificates dnsutils tzdata zip tar curl build-essential libtool iputils-ping libnss3 tini default-jre \
             && useradd -m -d /home/container container
 
 RUN         npm install npm@9.8.1 typescript ts-node @types/node --location=global

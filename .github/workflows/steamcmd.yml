@@ -1,0 +1,42 @@
+name: build steamcmd
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * 1"
+  push:
+    branches:
+      - master
+    paths:
+      - steamcmd/**
+jobs:
+  push:
+    name: "steamcmd:${{ matrix.distro }}"
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        distro:
+          - debian
+          - ubuntu
+          - dotnet
+          - proton
+          - proton_8   
+          - sniper
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+        with:
+          buildkitd-flags: --debug
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.REGISTRY_TOKEN }}
+      - uses: docker/build-push-action@v5
+        with:
+          context: ./steamcmd
+          file: ./steamcmd/${{ matrix.distro }}/Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: |
+            ghcr.io/parkervcp/steamcmd:${{ matrix.distro }}

@@ -1,4 +1,4 @@
-FROM        --platform=$BUILDPLATFORM debian:stable-slim
+FROM        --platform=$BUILDPLATFORM debian:bullseye-slim
 
 LABEL       author="David Wolfe (Red-Thirten)" maintainer="rehlmgaming@gmail.com"
 
@@ -17,6 +17,7 @@ RUN         dpkg --add-architecture i386 \
                 iproute2 \
                 gettext-base \
                 ca-certificates \
+                numactl \
                 libssl-dev \
                 lib32gcc-s1 \
                 libsdl2-2.0-0 \
@@ -25,7 +26,8 @@ RUN         dpkg --add-architecture i386 \
                 libstdc++6:i386 \
                 lib32stdc++6 \
                 libcap2 \
-                libnss-wrapper
+                libnss-wrapper \
+                tini
 
 ## Configure locale
 RUN         update-locale lang=en_US.UTF-8 \
@@ -44,6 +46,9 @@ USER        container
 ENV         USER=container HOME=/home/container
 WORKDIR     /home/container
 
-## Copy over and execute entrypoint.sh
-COPY        ./entrypoint.sh /entrypoint.sh
-CMD         [ "/bin/bash", "/entrypoint.sh" ]
+STOPSIGNAL SIGINT
+
+COPY        --chown=container:container ./entrypoint.sh /entrypoint.sh
+RUN         chmod +x /entrypoint.sh
+ENTRYPOINT    ["/usr/bin/tini", "-g", "--"]
+CMD         ["/entrypoint.sh"]

@@ -3,7 +3,7 @@ FROM        --platform=$TARGETOS/$TARGETARCH node:18-bullseye-slim
 LABEL       author="Myzumi Myzunto" maintainer="private@no.de"
 
 RUN         apt update \
-            && apt -y install ffmpeg iproute2 git sqlite3 libsqlite3-dev python3 python3-dev ca-certificates dnsutils tzdata zip tar curl build-essential libtool default-jre \
+            && apt -y install ffmpeg iproute2 git sqlite3 libsqlite3-dev python3 python3-dev ca-certificates dnsutils tzdata zip tar curl build-essential libtool tini default-jre \
             && npm -g install npm@latest \
             && useradd -m -d /home/container container
 
