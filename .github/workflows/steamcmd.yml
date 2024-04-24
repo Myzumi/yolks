@@ -18,12 +18,18 @@ jobs:
         distro:
           - debian
           - ubuntu
+<<<<<<<< HEAD:.github/workflows/steamcmd.yml
           - dotnet
           - proton
           - proton_8   
           - sniper
     steps:
       - uses: actions/checkout@v4
+========
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-qemu-action@v3
+>>>>>>>> 3798abab4ef49b5d1d9725f581a1eba7acccff8b:.github/workflows/installers.yml
       - uses: docker/setup-buildx-action@v3
         with:
           buildkitd-flags: --debug
@@ -34,9 +40,15 @@ jobs:
           password: ${{ secrets.REGISTRY_TOKEN }}
       - uses: docker/build-push-action@v5
         with:
+<<<<<<<< HEAD:.github/workflows/steamcmd.yml
           context: ./steamcmd
           file: ./steamcmd/${{ matrix.distro }}/Dockerfile
           platforms: linux/amd64
+========
+          context: ./installers
+          file: ./installers/${{ matrix.tag }}/Dockerfile
+          platforms: linux/amd64,linux/arm64
+>>>>>>>> 3798abab4ef49b5d1d9725f581a1eba7acccff8b:.github/workflows/installers.yml
           push: true
           tags: |
             ghcr.io/parkervcp/steamcmd:${{ matrix.distro }}
