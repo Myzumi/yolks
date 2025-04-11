@@ -7,7 +7,7 @@ RUN         apt update \
             && npm -g install npm@latest \
             && useradd -m -d /home/container container
 
-RUN         npm install npm@9.8.1 typescript ts-node @types/node --location=global
+RUN         npm install npm@10.8.2 typescript ts-node @types/node --location=global
 
 # install pnpm
 RUN         npm install -g corepack
