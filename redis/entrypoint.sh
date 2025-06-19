@@ -9,5 +9,8 @@ export INTERNAL_IP
 MODIFIED_STARTUP=$(echo -e ${STARTUP} | sed -e 's/{{/${/g' -e 's/}}/}/g')
 echo ":/home/container$ ${MODIFIED_STARTUP}"
 
+# Fixes the Redis Server Warning
+sysctl vm.overcommit_memory=1
+
 # Run the Server
 eval ${MODIFIED_STARTUP}
