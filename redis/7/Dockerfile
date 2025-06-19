@@ -7,6 +7,8 @@ LABEL   author="Michael Parker" maintainer="parker@pterodactyl.io"
 
 ENV     DEBIAN_FRONTEND=noninteractive
 
+RUN		sysctl vm.overcommit_memory=1
+
 RUN     apt -y update && \
         apt -y upgrade && \
         apt -y install iproute2 && \
