@@ -19,10 +19,9 @@ RUN         apt update -y \
                 zip \
                 unzip \
                 jq \
-                libxrender1 \
-                libxtst \
-                libxtst6 \
-                libxi6
+                libxrender1:i386 \
+                libxtst6:i386 \
+                libxi6:i386
 
 ## Setup user and working directory
 RUN         useradd -m -d /home/container -s /bin/bash container
