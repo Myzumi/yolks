@@ -1,6 +1,9 @@
-FROM        --platform=$TARGETOS/$TARGETARCH ibm-semeru-runtimes:open-11-jdk
+FROM        --platform=$TARGETOS/$TARGETARCH eclipse-temurin:22-jdk-noble
 
 LABEL       author="Michael Parker" maintainer="parker@pterodactyl.io"
+
+LABEL       org.opencontainers.image.source="https://github.com/pterodactyl/yolks"
+LABEL       org.opencontainers.image.licenses=MIT
 
 RUN         apt update -y \
             && apt install -y \
@@ -16,8 +19,8 @@ RUN         apt update -y \
                 iproute2 \
                 libfreetype6 \
                 tini \
-				zip \
-				unzip \
+                zip \
+                unzip \
                 jq
 
 ## Setup user and working directory

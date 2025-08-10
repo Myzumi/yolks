@@ -1,15 +1,5 @@
 name: build java
-on:
-  workflow_dispatch:
-  schedule:
-    - cron: "0 0 * * 1"
-  push:
-    branches:
-      - master
-    paths:
-      - java/**
-permissions:
-  packages: write
+on: ["workflow_dispatch"]
 
 jobs:
   push:

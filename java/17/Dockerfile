@@ -1,4 +1,4 @@
-FROM        --platform=$TARGETOS/$TARGETARCH eclipse-temurin:17-jdk-jammy
+FROM        --platform=$TARGETOS/$TARGETARCH eclipse-temurin:17-jdk-noble
 
 LABEL       author="Michael Parker" maintainer="parker@pterodactyl.io"
 
@@ -20,7 +20,8 @@ RUN         apt update -y \
                 libfreetype6 \
                 tini \
 				zip \
-				unzip
+				unzip \
+                jq
 
 ## Setup user and working directory
 RUN         useradd -m -d /home/container -s /bin/bash container
