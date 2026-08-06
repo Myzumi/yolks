@@ -2,7 +2,7 @@ FROM        --platform=$TARGETOS/$TARGETARCH ghcr.io/parkervcp/yolks:debian
 
 LABEL       author="Torsten Widmann" maintainer="info@goover.de"
 
-ENV         DEBIAN_FRONTEND noninteractive
+ENV         DEBIAN_FRONTEND=noninteractive
 
 RUN         apt update -y \
             && apt upgrade -y \
