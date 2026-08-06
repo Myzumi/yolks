@@ -1,22 +1,22 @@
-FROM      --platform=$TARGETOS/$TARGETARCH alpine:edge
+FROM --platform=$TARGETOS/$TARGETARCH ghcr.io/mumble-voip/mumble-server:latest
 
-LABEL       author="Michael Parker" maintainer="parker@pterodactyl.io"
+# Install runtime dependencies
+RUN apt update \
+    && apt -y install iproute2 tini \
+    && useradd -m -d /home/container container
 
-LABEL     org.opencontainers.image.source="https://github.com/pterodactyl/yolks"
-LABEL     org.opencontainers.image.licenses=MIT
-
-##    install dependencies
-RUN   apk add --no-cache murmur tini
-
-RUN   adduser -D container
-
-USER   container
-ENV    USER=container HOME=/home/container
+# Set up user and working directory
+USER container
+ENV USER=container HOME=/home/container
 WORKDIR /home/container
 
+# Set the stop signal
 STOPSIGNAL SIGINT
 
-COPY        --chown=container:container ./entrypoint.sh /entrypoint.sh
-RUN         chmod +x /entrypoint.sh
-ENTRYPOINT    ["/sbin/tini", "-g", "--"]
-CMD         ["/entrypoint.sh"]
+# Copy and set up the entrypoint script
+COPY --chown=container:container ./entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# Define entrypoint and command
+ENTRYPOINT ["/usr/bin/tini", "-g", "--"]
+CMD ["/entrypoint.sh"]

@@ -12,27 +12,27 @@ export INTERNAL_IP
 cd /home/container || exit 1
 
 # Print Java version
-printf "\033[1m\033[33mcontainer@pterodactyl~ \033[0mjava -version\n"
+printf "\033[1m\033[33mcontainer~ \033[0mjava -version\n"
 java -version
 
 
 # Print Python version
 if command -v python &> /dev/null
 then
-	printf "\033[1m\033[33mcontainer@pterodactyl~ \033[0mpython --version\n"
+	printf "\033[1m\033[33mcontainer~ \033[0mpython --version\n"
 	python --version
 else
-	printf "\033[1m\033[33mcontainer@pterodactyl~ \033[0mpython3 --version\n"
+	printf "\033[1m\033[33mcontainer~ \033[0mpython3 --version\n"
 	python3 --version
 fi
 
 # Convert all of the "{{VARIABLE}}" parts of the command into the expected shell
 # variable format of "${VARIABLE}" before evaluating the string and automatically
 # replacing the values.
-PARSED=$(echo "${STARTUP}" | sed -e 's/{{/${/g' -e 's/}}/}/g' | eval echo "$(cat -)")
+PARSED=$(echo "$STARTUP" | sed -e 's/{{/${/g' -e 's/}}/}/g')
 
-# Display the command we're running in the output, and then execute it with the env
-# from the container itself.
-printf "\033[1m\033[33mcontainer@pterodactyl~ \033[0m%s\n" "$PARSED"
+# Display the command we're running in the output, and then execute it with eval
+printf "\033[1m\033[33mcontainer~ \033[0m"
+echo "$PARSED"
 # shellcheck disable=SC2086
-exec env ${PARSED}
+eval "$PARSED"
