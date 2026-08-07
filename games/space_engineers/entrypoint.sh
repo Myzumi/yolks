@@ -29,15 +29,19 @@ if [ -z "${AUTO_UPDATE:-}" ] || [ "${AUTO_UPDATE}" = "1" ]; then
 
         UPDATE_CMD=(
             ./steamcmd/steamcmd.sh
-            +force_install_dir /home/container
-            +login "${STEAM_USER}" "${STEAM_PASS}" "${STEAM_AUTH}"
         )
 
+        # SteamCMD must select the Windows platform before login/app evaluation
+        # for Windows-only dedicated-server depots such as Space Engineers.
         if [ "${WINDOWS_INSTALL:-0}" = "1" ]; then
             UPDATE_CMD+=(+@sSteamCmdForcePlatformType windows)
         fi
 
-        UPDATE_CMD+=(+app_update "${SRCDS_APPID}")
+        UPDATE_CMD+=(
+            +force_install_dir /home/container
+            +login "${STEAM_USER}" "${STEAM_PASS}" "${STEAM_AUTH}"
+            +app_update "${SRCDS_APPID}"
+        )
 
         if [ -n "${SRCDS_BETAID:-}" ]; then
             UPDATE_CMD+=(-beta "${SRCDS_BETAID}")
