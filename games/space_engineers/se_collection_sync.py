@@ -302,9 +302,6 @@ def main() -> int:
     strict = env_bool("SE_COLLECTION_SYNC_STRICT", False)
     cache_fallback = env_bool("SE_COLLECTION_CACHE_FALLBACK", True)
 
-    if not collection_id.isdigit():
-        return fail("SE_WORKSHOP_COLLECTION_ID is missing or invalid.", strict)
-
     mode = os.getenv("SE_COLLECTION_SYNC_MODE", "replace").strip().lower()
     if mode not in {"replace", "merge"}:
         return fail("SE_COLLECTION_SYNC_MODE must be 'replace' or 'merge'.", strict)
@@ -312,27 +309,47 @@ def main() -> int:
     extras = parse_ids(os.getenv("SE_WORKSHOP_EXTRA_MOD_IDS"))
     excludes = set(parse_ids(os.getenv("SE_WORKSHOP_EXCLUDE_MOD_IDS")))
 
-    try:
-        mod_ids = flatten_collection(collection_id)
-        if not mod_ids:
-            raise RuntimeError("Steam collection resolved to zero Workshop items")
-        write_cache(collection_id, mod_ids)
+    # A collection ID of 0 (or blank) means "no collection": use only
+    # SE_WORKSHOP_EXTRA_MOD_IDS. This is useful for master-loader mods and
+    # other deliberately small top-level mod lists.
+    collection_disabled = collection_id in {"", "0"}
+
+    if collection_disabled:
+        if not extras:
+            return fail(
+                "No Workshop collection is configured and SE_WORKSHOP_EXTRA_MOD_IDS is empty.",
+                strict,
+            )
+        mod_ids = []
         print(
-            f"[collection-sync] Collection {collection_id}: "
-            f"resolved {len(mod_ids)} Workshop items."
+            f"[collection-sync] Collection lookup disabled; "
+            f"using {len(extras)} extra Workshop item(s) only."
         )
-    except Exception as exc:
-        if cache_fallback:
-            mod_ids = load_cache(collection_id)
-            if mod_ids:
-                print(
-                    f"[collection-sync] WARNING: {exc}; using cached list of "
-                    f"{len(mod_ids)} mods."
-                )
+    else:
+        if not collection_id.isdigit():
+            return fail("SE_WORKSHOP_COLLECTION_ID is invalid.", strict)
+
+        try:
+            mod_ids = flatten_collection(collection_id)
+            if not mod_ids:
+                raise RuntimeError("Steam collection resolved to zero Workshop items")
+            write_cache(collection_id, mod_ids)
+            print(
+                f"[collection-sync] Collection {collection_id}: "
+                f"resolved {len(mod_ids)} Workshop items."
+            )
+        except Exception as exc:
+            if cache_fallback:
+                mod_ids = load_cache(collection_id)
+                if mod_ids:
+                    print(
+                        f"[collection-sync] WARNING: {exc}; using cached list of "
+                        f"{len(mod_ids)} mods."
+                    )
+                else:
+                    return fail(f"{exc}; no usable cache exists.", strict)
             else:
-                return fail(f"{exc}; no usable cache exists.", strict)
-        else:
-            return fail(str(exc), strict)
+                return fail(str(exc), strict)
 
     world_name = os.getenv("WORLD_NAME", "World").strip() or "World"
     world_dir = CONFIG_ROOT / "Saves" / world_name
