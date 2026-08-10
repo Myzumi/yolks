@@ -25,12 +25,24 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Verify Wine base exists
+        shell: bash
+        run: |
+          set -euo pipefail
+          IMAGE="ghcr.io/myzumi/yolks:wine_latest"
+          if ! docker buildx imagetools inspect "$IMAGE" >/dev/null 2>&1; then
+            echo "::error title=Missing Wine base::$IMAGE is not available. Run the 'Build Myzumi Wine Latest Yolk' workflow first."
+            exit 1
+          fi
+          echo "Using base image: $IMAGE"
+
       - name: Build and publish
         uses: docker/build-push-action@v6
         with:
           context: ./games/space_engineers
           file: ./games/space_engineers/Dockerfile
           push: true
+          pull: true
           platforms: linux/amd64
           tags: |
             ghcr.io/myzumi/yolks:space_engineers

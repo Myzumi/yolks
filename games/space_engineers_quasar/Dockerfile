@@ -1,10 +1,10 @@
 # Space Engineers Quasar + Magnetar Pterodactyl runtime.
 #
-# Transitional image: deliberately keeps the proven Pelican/Pterodactyl Wine yolk
+# Transitional image: deliberately keeps the fork-owned Myzumi Wine yolk
 # as the base so we retain its user/runtime/SteamCMD plumbing while Quasar runs the
 # SE dedicated server natively through MagnetarInterim (.NET 10). Wine is present
 # but is not used by the Quasar/Magnetar launch path.
-FROM ghcr.io/pelican-eggs/yolks:wine_latest
+FROM ghcr.io/myzumi/yolks:wine_latest
 
 LABEL org.opencontainers.image.title="Space Engineers Quasar Pterodactyl Yolk"
 LABEL org.opencontainers.image.description="Quasar + MagnetarInterim runtime for Space Engineers Dedicated Server"

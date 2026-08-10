@@ -29,12 +29,37 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Verify Wine base exists
+        shell: bash
+        run: |
+          set -euo pipefail
+          IMAGE="ghcr.io/myzumi/yolks:wine_latest"
+          if ! docker buildx imagetools inspect "$IMAGE" >/dev/null 2>&1; then
+            echo "::error title=Missing Wine base::$IMAGE is not available. Run the 'Build Myzumi Wine Latest Yolk' workflow first."
+            exit 1
+          fi
+          echo "Using base image: $IMAGE"
+
+      - name: Verify Wine base ABI for native Havok
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker run --rm ghcr.io/myzumi/yolks:wine_latest sh -lc '
+            set -eu
+            GLIBC_VERSION="$(ldd --version | head -1 | awk "{print \$NF}")"
+            echo "glibc: $GLIBC_VERSION"
+            dpkg --compare-versions "$GLIBC_VERSION" ge "2.38"
+            strings /usr/lib/x86_64-linux-gnu/libstdc++.so.6 | grep -qx "GLIBCXX_3.4.32"
+            echo "Required ABI present: GLIBC >= 2.38 and GLIBCXX_3.4.32"
+          '
+
       - name: Build and publish Quasar yolk
         uses: docker/build-push-action@v6
         with:
           context: ./games/space_engineers_quasar
           file: ./games/space_engineers_quasar/Dockerfile
           push: true
+          pull: true
           platforms: linux/amd64
           tags: |
             ghcr.io/myzumi/yolks:space_engineers_quasar

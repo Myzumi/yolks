@@ -4,7 +4,7 @@
 #   - correct VALIDATE=0 handling
 #   - Steam Workshop collection -> Space Engineers Mods synchronization
 
-FROM ghcr.io/pelican-eggs/yolks:wine_latest
+FROM ghcr.io/myzumi/yolks:wine_latest
 
 LABEL org.opencontainers.image.title="Space Engineers Pterodactyl Yolk"
 LABEL org.opencontainers.image.description="Wine runtime with Space Engineers Workshop collection synchronization"
