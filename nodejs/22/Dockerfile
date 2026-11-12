@@ -1,6 +1,6 @@
 FROM        --platform=$TARGETOS/$TARGETARCH node:22-trixie-slim
 
-LABEL       author="Michael Parker" maintainer="parker@pterodactyl.io"
+LABEL       author="Myzumi Myzunto" maintainer="private@no.de"
 
 # add container user and set stop signal
 RUN         useradd -m -d /home/container container
@@ -27,7 +27,7 @@ RUN         apt update \
                 libnss3 \
                 tini
 
-RUN         npm install --global npm@latest typescript ts-node @types/node tsx
+RUN         npm install --global npm@latest typescript@5 ts-node @types/node tsx
 
 # install pnpm
 RUN         npm install -g corepack

@@ -6,7 +6,7 @@ RUN         apt update \
             && apt -y install ffmpeg iproute2 git sqlite3 libsqlite3-dev python3 python3-dev ca-certificates dnsutils tzdata zip tar curl build-essential libtool tini default-jre \
             && useradd -m -d /home/container container
 
-RUN         npm install npm@10.8.2 typescript ts-node @types/node --location=global
+RUN         npm install npm@10.8.2 typescript@5 ts-node @types/node --location=global
 
 # install pnpm
 RUN         npm install -g corepack

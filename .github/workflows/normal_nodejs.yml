@@ -19,6 +19,9 @@ jobs:
           - 21-normal
           - 22-normal
           - 23-normal
+          - 24-normal
+          - 25-normal
+          - 26-normal
     steps:
       - uses: actions/checkout@v4
       - uses: docker/setup-qemu-action@v3

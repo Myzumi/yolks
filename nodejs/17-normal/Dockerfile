@@ -27,7 +27,7 @@ RUN         apt update \
                 libnss3 \
                 tini
 
-RUN         npm install --global npm@8.x.x typescript ts-node @types/node
+RUN         npm install --global npm@8.x.x typescript@5 ts-node @types/node
 
 USER        container
 ENV         USER=container HOME=/home/container

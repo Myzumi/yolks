@@ -1,6 +1,6 @@
 FROM        --platform=$TARGETOS/$TARGETARCH node:26-trixie-slim
 
-LABEL       author="Michael Parker" maintainer="parker@pterodactyl.io"
+LABEL       author="Myzumi Myzunto" maintainer="private@no.de"
 
 RUN         useradd -m -d /home/container container
 STOPSIGNAL SIGINT
@@ -26,7 +26,7 @@ RUN         apt update \
                 libnss3 \
                 tini
 
-RUN         npm install --global npm@latest typescript ts-node @types/node tsx
+RUN         npm install --global npm@latest typescript@5 ts-node @types/node tsx
 
 RUN         npm install -g corepack --force
 RUN         corepack enable
