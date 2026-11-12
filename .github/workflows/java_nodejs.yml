@@ -9,12 +9,8 @@ jobs:
       fail-fast: false
       matrix:
         tag:
-          - 12-java
-          - 14-java
           - 16-java
-          - 17-java
           - 18-java
-          - 19-java
           - 20-java
           - 21-java
           - 22-java
