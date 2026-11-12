@@ -9,12 +9,8 @@ jobs:
       fail-fast: false
       matrix:
         tag:
-          - 12-normal
-          - 14-normal
           - 16-normal
-          - 17-normal
           - 18-normal
-          - 19-normal
           - 20-normal
           - 21-normal
           - 22-normal
